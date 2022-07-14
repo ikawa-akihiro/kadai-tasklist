@@ -28,7 +28,10 @@ class TasksController extends Controller
      */
     public function create()
     {
-        //
+        $task = new Task();
+        
+        // タスク作成画面を表示
+        return view('tasks.create', ['task' => $task]);
     }
 
     /**
@@ -39,7 +42,13 @@ class TasksController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // タスクを作成
+        $task = new Task();
+        $task->content = $request->content;
+        $task->save();
+        
+        // トップページへリダイレクトさせる
+        return redirect('/');
     }
 
     /**
