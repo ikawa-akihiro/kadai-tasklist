@@ -10,6 +10,7 @@
                     <th>id</th>
                     <th>タスク</th>
                     <th></th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -20,6 +21,12 @@
                     <td>{{ $task->content }}</td>
                     {{-- タスク編集ページへのリンク --}}
                     <td>{!! link_to_route('tasks.edit', '編集', ['task' => $task->id]) !!}</td>
+                    {{-- タスク削除フォーム --}}
+                    <td>
+                    {!! Form::model($task, ['route' => ['tasks.destroy', $task->id], 'method' => 'delete']) !!}
+                        {!! Form::submit('削除', ['class' => 'btn btn-danger']) !!}
+                    {!! Form::close() !!}
+                    </td>
                 </tr>
                 @endforeach
             </tbody>
