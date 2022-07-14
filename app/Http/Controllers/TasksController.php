@@ -90,7 +90,7 @@ class TasksController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // idの値でメッセージを検索して取得
+        // idの値でタスクを検索して取得
         $task = Task::findOrFail($id);
         
         // タスクを更新
