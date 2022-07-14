@@ -9,6 +9,7 @@
                 <tr>
                     <th>id</th>
                     <th>タスク</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -17,6 +18,8 @@
                     {{--タスク詳細ページへのリンク--}}
                     <td>{!! link_to_route('tasks.show', $task->id, ['task' => $task->id]) !!}</td>
                     <td>{{ $task->content }}</td>
+                    {{-- タスク編集ページへのリンク --}}
+                    <td>{!! link_to_route('tasks.edit', '編集', ['task' => $task->id]) !!}</td>
                 </tr>
                 @endforeach
             </tbody>

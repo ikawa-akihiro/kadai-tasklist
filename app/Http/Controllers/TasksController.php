@@ -74,7 +74,11 @@ class TasksController extends Controller
      */
     public function edit($id)
     {
-        //
+        // idの値でタスクを検索して取得
+        $task = Task::findOrFail($id);
+        
+        // タスク編集画面に表示
+        return view('tasks.edit', ['task' => $task]);
     }
 
     /**
@@ -86,7 +90,15 @@ class TasksController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        // idの値でメッセージを検索して取得
+        $task = Task::findOrFail($id);
+        
+        // タスクを更新
+        $task->content = $request->content;
+        $task->save();
+        
+        // トップページへリダイレクトさせる
+        return redirect('/');
     }
 
     /**
