@@ -50,7 +50,11 @@ class TasksController extends Controller
      */
     public function show($id)
     {
-        //
+        // idの値でタスクを検索して取得
+        $task = Task::findOrFail($id);
+        
+        // タスク詳細画面に表示
+        return view('tasks.show', ['task' => $task]);
     }
 
     /**
