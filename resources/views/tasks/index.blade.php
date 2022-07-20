@@ -2,12 +2,12 @@
 
 @section('content')
     @if(Auth::check())
-        <div style="display: flex; justify-content: space-between;">
-            <h1>タスク一覧</h1>
-            {{--タスク作成ページへのリンク--}}
-            {!! link_to_route('tasks.create', '新規タスクの投稿', [], ['class' => 'btn btn-primary']) !!}
-        </div>
         @if (count($tasks) > 0)
+            <div style="display: flex; justify-content: space-between;">
+                <h1>タスク一覧</h1>
+                {{--タスク作成ページへのリンク--}}
+                {!! link_to_route('tasks.create', '新規タスクの投稿', [], ['class' => 'btn btn-primary']) !!}
+            </div>
             <table class="table table-striped">
                 <thead>
                     <tr>
@@ -37,9 +37,15 @@
                     @endforeach
                 </tbody>
             </table>
+            {{-- ページネーションのリンク --}}
+            {{$tasks->links()}}
+        @else
+            <div class="text-center">
+            <h4>タスクを追加してください。</h4>
+            {{--タスク作成ページへのリンク--}}
+            {!! link_to_route('tasks.create', '新規タスクの投稿', [], ['class' => 'btn btn-primary']) !!}
+            </div>
         @endif
-        {{-- ページネーションのリンク --}}
-        {{$tasks->links()}}
     @else
         <div class="center jumbotron">
             <div class="text-center">
