@@ -14,11 +14,22 @@ class TasksController extends Controller
      */
     public function index()
     {
-        //タスク一覧を取得する
-        $tasks = Task::orderBy('id', 'desc')->paginate(10);
+        $data = [];
+        // ログイン済みの場合
+        if (\Auth::check()) { 
+            // 認証済みユーザを取得
+            $user = \Auth::user();
+            // ユーザのタスク一覧を取得
+            $tasks = $user->tasks()->orderBy('id', 'desc')->paginate(10);
+
+            $data = [
+                'user' => $user,
+                'tasks' => $tasks,
+            ];
+        }
         
         // タスク一覧画面に表示
-        return view('tasks.index', ['tasks' => $tasks]);
+        return view('tasks.index', $data);
     }
 
     /**
@@ -52,7 +63,7 @@ class TasksController extends Controller
         $task = new Task();
         $task->status = $request->status;
         $task->content = $request->content;
-        $task->save();
+        \Auth::user()->tasks()->save($task);
         
         // トップページへリダイレクトさせる
         return redirect('/');
@@ -66,11 +77,18 @@ class TasksController extends Controller
      */
     public function show($id)
     {
-        // idの値でタスクを検索して取得
-        $task = Task::findOrFail($id);
+        // 認証済みユーザを取得
+        $user = \Auth::user();
+        // ユーザのタスク一覧を取得
+        $tasks = $user->tasks()->get();
+        foreach($tasks as $task){
+            // リクエストで受け取ったidと一致すればタスク詳細画面へ表示する
+            if($task->id == $id){
+                return view('tasks.show', ['task' => $task]);
+            }
+        }
         
-        // タスク詳細画面に表示
-        return view('tasks.show', ['task' => $task]);
+        return redirect('/');
     }
 
     /**
@@ -81,11 +99,18 @@ class TasksController extends Controller
      */
     public function edit($id)
     {
-        // idの値でタスクを検索して取得
-        $task = Task::findOrFail($id);
+        // 認証済みユーザを取得
+        $user = \Auth::user();
+        // ユーザのタスク一覧を取得
+        $tasks = $user->tasks()->get();
+        foreach($tasks as $task){
+            // リクエストで受け取ったidと一致すればタスク編集画面へ表示する
+            if($task->id == $id){
+                return view('tasks.edit', ['task' => $task]);
+            }
+        }
         
-        // タスク編集画面に表示
-        return view('tasks.edit', ['task' => $task]);
+        return redirect('/');
     }
 
     /**
