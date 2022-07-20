@@ -14,11 +14,22 @@ class TasksController extends Controller
      */
     public function index()
     {
-        //タスク一覧を取得する
-        $tasks = Task::orderBy('id', 'desc')->paginate(10);
+        $data = [];
+        // ログイン済みの場合
+        if (\Auth::check()) { 
+            // 認証済みユーザを取得
+            $user = \Auth::user();
+            // ユーザのタスク一覧を取得
+            $tasks = $user->tasks()->orderBy('id', 'desc')->paginate(10);
+
+            $data = [
+                'user' => $user,
+                'tasks' => $tasks,
+            ];
+        }
         
         // タスク一覧画面に表示
-        return view('tasks.index', ['tasks' => $tasks]);
+        return view('tasks.index', $data);
     }
 
     /**
